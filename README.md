@@ -57,7 +57,8 @@ Sunlight
              ├──► O₂ released back to atmosphere
              ├──► Biomass harvested → Biodiesel / Biogas / Feed
              └──► Waste heat → Thermoelectric Generator (optional)
-```
+```<img width="273" height="174" alt="image" src="https://github.com/user-attachments/assets/f0cc574f-93be-4b68-bbed-3a978a174dfa" />
+
 
 ### Energy Flow Diagram
 
@@ -74,6 +75,7 @@ Sunlight
                       ▼               ▼
                  AC/DC Power     Biomass + Heat Energy
 ```
+<img width="691" height="470" alt="image" src="https://github.com/user-attachments/assets/c6af9ec3-01bb-4f66-a124-08ff41cd9eb6" />
 
 ---
 
