@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar × Algae — Hybrid Energy System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --sun: #F5A623;
+    --sun-pale: #FFF3DC;
+    --leaf: #2D7A4F;
+    --leaf-pale: #E6F4EC;
+    --leaf-mid: #5BB880;
+    --sky: #1A3A5C;
+    --sky-mid: #2E6094;
+    --water: #3A9EBF;
+    --water-pale: #E0F4FA;
+    --bg: #F8F6F0;
+    --bg2: #FFFFFF;
+    --text: #1C1C1A;
+    --text-muted: #6B6A64;
+    --border: rgba(28,28,26,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(248,246,240,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--leaf);
+    letter-spacing: -0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--leaf); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, #e8f7ec 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, #fff3dc 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  /* Floating particles */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.2; }
+    100% { transform: translateY(-90vh) scale(0.3); opacity: 0; }
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--leaf-pale);
+    color: var(--leaf);
+    border: 1px solid rgba(45,122,79,0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+    animation: fade-in 0.8s ease both;
+  }
+  .badge-dot {
+    width: 7px; height: 7px;
+    background: var(--leaf);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(1.4); }
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    max-width: 820px;
+    position: relative; z-index: 1;
+    animation: slide-up 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+  }
+  h1 em { font-style: italic; color: var(--leaf); }
+  h1 .sun-word { color: var(--sun); }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    font-weight: 300;
+    position: relative; z-index: 1;
+    animation: slide-up 0.9s cubic-bezier(0.22,1,0.36,1) 0.25s both;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    position: relative; z-index: 1;
+    animation: fade-in 0.8s ease 0.5s both;
+  }
+  .btn-primary {
+    background: var(--leaf);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,122,79,0.3); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 400;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+  }
+  .btn-outline:hover { border-color: var(--leaf); background: var(--leaf-pale); }
+
+  /* Stats row */
+  .hero-stats {
+    margin-top: 4rem;
+    display: flex; gap: 2px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--border);
+    position: relative; z-index: 1;
+    animation: fade-in 1s ease 0.7s both;
+  }
+  .stat {
+    background: var(--bg2);
+    padding: 1.2rem 2rem;
+    text-align: center;
+    flex: 1;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--leaf);
+    display: block;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--leaf);
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 1rem; color: var(--text-muted); max-width: 520px;
+    line-height: 1.7; font-weight: 300;
+  }
+
+  /* ── HOW IT WORKS ── */
+  #how { background: var(--bg2); }
+
+  .flow-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 3.5rem;
+    position: relative;
+  }
+  .flow-line {
+    position: absolute;
+    left: 31px; top: 48px; bottom: 48px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--sun), var(--leaf), var(--water), var(--sky));
+    border-radius: 2px;
+  }
+  .flow-step {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    padding: 0.5rem 0 2.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .flow-step.visible { opacity: 1; transform: none; }
+  .flow-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    position: relative; z-index: 1;
+  }
+  .flow-icon.sun-ico { background: #FFF3DC; border: 2px solid #F5A623; }
+  .flow-icon.pv-ico  { background: #E6F4EC; border: 2px solid var(--leaf); }
+  .flow-icon.algae-ico { background: #E0F4FA; border: 2px solid var(--water); }
+  .flow-icon.elec-ico { background: #EEF2FF; border: 2px solid #6074DE; }
+  .flow-text h3 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; margin-bottom: 0.4rem; }
+  .flow-text p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.65; max-width: 520px; font-weight: 300; }
+
+  /* ── INTERACTIVE DIAGRAM ── */
+  #diagram { background: var(--bg); }
+
+  .diagram-wrap {
+    margin-top: 3rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diagram-hint {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--leaf-pale);
+    border-radius: 100px;
+    display: inline-block;
+    left: 50%; transform: translateX(-50%);
+    position: relative;
+  }
+
+  /* SVG interactive diagram */
+  #sys-svg { width: 100%; height: auto; display: block; }
+  .comp { cursor: pointer; transition: filter 0.2s; }
+  .comp:hover { filter: brightness(0.92) saturate(1.2); }
+  .comp rect, .comp path, .comp circle { transition: all 0.25s; }
+
+  /* Info panel */
+  .info-panel {
+    position: absolute; top: 2.5rem; right: 2.5rem;
+    width: 280px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .info-panel.show {
+    opacity: 1; transform: none; pointer-events: auto;
+  }
+  .info-panel-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .info-panel-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem; margin-bottom: 0.5rem;
+  }
+  .info-panel-role {
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--leaf);
+    margin-bottom: 0.6rem;
+  }
+  .info-panel-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; font-weight: 300; }
+  .info-panel-close {
+    margin-top: 1rem;
+    font-size: 0.78rem; color: var(--text-muted);
+    cursor: pointer; text-decoration: underline;
+    background: none; border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── PROS CONS ── */
+  #proscons { background: var(--bg2); }
+  .pc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--border);
+    margin-top: 3rem;
+  }
+  .pc-col { background: var(--bg2); padding: 2.5rem; }
+  .pc-head {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'DM Serif Display', serif; font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+  .pc-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .pro-dot { background: var(--leaf); }
+  .con-dot { background: #E05858; }
+  .pc-item {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    margin-bottom: 1.1rem;
+    font-size: 0.9rem; line-height: 1.6;
+  }
+  .pc-item-icon { margin-top: 2px; flex-shrink: 0; font-size: 0.9rem; }
+
+  /* ── RESEARCH ── */
+  #research { background: var(--bg); }
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .research-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s;
+  }
+  .research-card.visible { opacity: 1; transform: none; }
+  .research-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.07); }
+  .research-flag {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .research-org { font-size: 0.75rem; font-weight: 500; color: var(--leaf); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.07em; }
+  .research-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; margin-bottom: 0.6rem; line-height: 1.3; }
+  .research-result { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+  .research-highlight {
+    display: inline-block;
+    margin-top: 0.75rem;
+    background: var(--leaf-pale);
+    color: var(--leaf);
+    border-radius: 8px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem; font-weight: 500;
+  }
+
+  /* ── EFFICIENCY ── */
+  #efficiency { background: var(--sky); color: #fff; }
+  #efficiency .section-title { color: #fff; }
+  #efficiency .section-sub { color: rgba(255,255,255,0.6); }
+  #efficiency .section-tag { color: var(--leaf-mid); }
+
+  .eff-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .eff-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .eff-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem;
+    color: var(--leaf-mid);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .eff-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+  .bar-section { margin-top: 3rem; }
+  .bar-label-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.82rem; color: rgba(255,255,255,0.5);
+    margin-bottom: 0.75rem;
+  }
+  .bar-row { margin-bottom: 1.25rem; }
+  .bar-name { font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-bottom: 0.4rem; }
+  .bar-track {
+    height: 10px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .bar-fill.sun-color { background: var(--sun); }
+  .bar-fill.leaf-color { background: var(--leaf-mid); }
+  .bar-fill.hybrid-color { background: linear-gradient(90deg, var(--leaf-mid), var(--sun)); }
+
+  /* ── CREATOR ── */
+  #creator {
+    background: var(--bg);
+    text-align: center;
+    padding: 8rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .creator-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(45,122,79,0.07) 0%, transparent 70%);
+  }
+  .creator-pre {
+    font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+    opacity: 0;
+    animation: fade-in 1s ease 0.3s both;
+  }
+  .creator-name-wrap {
+    position: relative; z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .creator-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--leaf) 0%, var(--sun) 50%, var(--water) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  .creator-name.revealed {
+    animation: name-reveal 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  @keyframes name-reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .creator-tagline {
+    margin-top: 1.2rem;
+    font-size: 1.05rem; color: var(--text-muted); font-weight: 300;
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    position: relative; z-index: 1;
+    opacity: 0;
+    animation: fade-in 1s ease 1.2s both;
+  }
+  .creator-dots {
+    display: flex; gap: 0.5rem; justify-content: center;
+    margin-top: 2.5rem;
+    position: relative; z-index: 1;
+    opacity: 0;
+    animation: fade-in 1s ease 1.6s both;
+  }
+  .creator-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    animation: dot-dance 1.8s ease-in-out infinite;
+  }
+  .creator-dot:nth-child(1) { background: var(--leaf); animation-delay: 0s; }
+  .creator-dot:nth-child(2) { background: var(--sun); animation-delay: 0.2s; }
+  .creator-dot:nth-child(3) { background: var(--water); animation-delay: 0.4s; }
+  @keyframes dot-dance {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--leaf-mid); text-decoration: none; }
+
+  /* ── KEYFRAMES ── */
+  @keyframes fade-in { from { opacity:0; } to { opacity:1; } }
+  @keyframes slide-up { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .hero-stats { flex-direction: column; gap: 2px; }
+    .pc-grid { grid-template-columns: 1fr; }
+    .eff-grid { grid-template-columns: 1fr; }
+    .info-panel { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Solar × Algae</span>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#diagram">System</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#efficiency">Efficiency</a></li>
+    <li><a href="https://github.com" target="_blank">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <!-- Particles injected by JS -->
+  <div class="badge"><span class="badge-dot"></span>Open-source green energy project</div>
+  <h1>One panel.<br><em>Double</em> the <span class="sun-word">energy.</span><br>Cleaner air.</h1>
+  <p class="hero-sub">A hybrid system that mounts a living algae bioreactor behind a solar panel — producing electricity, growing clean fuel, and absorbing CO₂ from the air, all from the same footprint.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="#diagram">Explore the system</a>
+    <a class="btn-outline" href="#how">How it works</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">+40%</span><div class="stat-label">more energy per m²</div></div>
+    <div class="stat"><span class="stat-num">27g</span><div class="stat-label">CO₂ fixed per m²/day</div></div>
+    <div class="stat"><span class="stat-num">−12°C</span><div class="stat-label">cooler solar panel</div></div>
+    <div class="stat"><span class="stat-num">$400</span><div class="stat-label">DIY build cost</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="section-tag">The concept</div>
+    <h2 class="section-title">Two technologies,<br>one structure</h2>
+    <p class="section-sub">Solar panels waste over half their captured sunlight as heat. Algae love exactly that surplus. We simply put them together.</p>
+
+    <div class="flow-wrapper">
+      <div class="flow-line"></div>
+      <div class="flow-step">
+        <div class="flow-icon sun-ico">☀️</div>
+        <div class="flow-text">
+          <h3>Sunlight arrives</h3>
+          <p>The sun delivers a full spectrum — ultraviolet, visible light, and infrared heat. Conventional solar panels convert only ~20% of this into electricity and discard the rest as waste heat, raising panel temperature and actually reducing efficiency.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon pv-ico">⚡</div>
+        <div class="flow-text">
+          <h3>Solar panel converts visible light → electricity</h3>
+          <p>A semi-transparent photovoltaic panel sits at the front. It captures the blue and red wavelengths most efficiently and lets ~20% of light — particularly infrared — pass through to the layer behind it.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon algae-ico">🌿</div>
+        <div class="flow-text">
+          <h3>Algae bioreactor absorbs the rest</h3>
+          <p>A flat-plate photobioreactor filled with Chlorella vulgaris is mounted directly behind the panel. The algae feast on the transmitted infrared and diffused light, pulling CO₂ from pumped-in air and growing into energy-rich biomass. The water acts as a cooling jacket, keeping the solar cell 10–15°C cooler than it would otherwise run.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon elec-ico">🔋</div>
+        <div class="flow-text">
+          <h3>Dual output: electricity + biomass</h3>
+          <p>The battery stores solar electricity. The algae are periodically harvested for biodiesel, biogas, or fertiliser. An ESP32 microcontroller monitors pH, CO₂, temperature, and light — automatically controlling pumps and alerts over WiFi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE DIAGRAM -->
+<section id="diagram">
+  <div class="container">
+    <div class="section-tag">Interactive diagram</div>
+    <h2 class="section-title">Click any component<br>to learn its role</h2>
+    <p class="section-sub">Every part of the system has a job. Tap or click below to explore.</p>
+
+    <div class="diagram-wrap">
+      <div style="text-align:center">
+        <span class="diagram-hint">👆 Click any highlighted component for details</span>
+      </div>
+
+      <!-- SVG DIAGRAM -->
+      <svg id="sys-svg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sun -->
+        <g class="comp" id="c-sun" onclick="showInfo('sun')" aria-label="Sun">
+          <circle cx="450" cy="50" r="36" fill="#FFF3DC" stroke="#F5A623" stroke-width="2"/>
+          <text x="450" y="46" text-anchor="middle" font-family="DM Serif Display,serif" font-size="20" fill="#F5A623">☀</text>
+          <text x="450" y="62" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#A06A10" font-weight="500">SUNLIGHT</text>
+          <!-- Rays -->
+          <line x1="450" y1="8" x2="450" y2="2" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+          <line x1="476" y1="16" x2="480" y2="10" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+          <line x1="424" y1="16" x2="420" y2="10" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+          <line x1="490" y1="40" x2="496" y2="38" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+          <line x1="410" y1="40" x2="404" y2="38" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <!-- Arrow sun → panel -->
+        <line x1="450" y1="88" x2="450" y2="118" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#darr)"/>
+
+        <!-- Solar Panel -->
+        <g class="comp" id="c-solar" onclick="showInfo('solar')" aria-label="Solar Panel">
+          <rect x="240" y="120" width="420" height="56" rx="10" fill="#E6F4EC" stroke="#2D7A4F" stroke-width="1.5"/>
+          <text x="450" y="143" text-anchor="middle" font-family="DM Serif Display,serif" font-size="14" fill="#1A4D30">Semi-transparent Solar Panel (PV)</text>
+          <text x="450" y="161" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#5BB880">100W · 18–21% efficiency · lets IR pass through</text>
+        </g>
+
+        <!-- Arrow PV → electricity right -->
+        <line x1="662" y1="148" x2="730" y2="148" stroke="#5BB880" stroke-width="1.5" marker-end="url(#darr)"/>
+        <text x="696" y="140" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#2D7A4F">electricity</text>
+
+        <!-- MPPT -->
+        <g class="comp" id="c-mppt" onclick="showInfo('mppt')" aria-label="MPPT Controller">
+          <rect x="732" y="120" width="140" height="56" rx="10" fill="#E6F4EC" stroke="#2D7A4F" stroke-width="1.5"/>
+          <text x="802" y="143" text-anchor="middle" font-family="DM Serif Display,serif" font-size="13" fill="#1A4D30">MPPT Controller</text>
+          <text x="802" y="160" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5BB880">+ 12V Battery</text>
+        </g>
+
+        <!-- Arrow: IR passes through to algae -->
+        <line x1="450" y1="178" x2="450" y2="210" stroke="#3A9EBF" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#darr)"/>
+        <text x="476" y="200" font-family="DM Sans,sans-serif" font-size="9.5" fill="#3A9EBF">IR + diffused light</text>
+
+        <!-- Algae PBR -->
+        <g class="comp" id="c-algae" onclick="showInfo('algae')" aria-label="Algae Bioreactor">
+          <rect x="200" y="212" width="500" height="64" rx="10" fill="#E0F4FA" stroke="#3A9EBF" stroke-width="1.5"/>
+          <text x="450" y="237" text-anchor="middle" font-family="DM Serif Display,serif" font-size="14" fill="#1A3A5C">Algae Photobioreactor (Flat-plate PBR)</text>
+          <text x="450" y="256" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#3A9EBF">Chlorella vulgaris · BG-11 medium · 10–50L · CO₂ in / O₂ out</text>
+        </g>
+
+        <!-- Air pump arrow left in -->
+        <line x1="140" y1="244" x2="198" y2="244" stroke="#888" stroke-width="1.5" marker-end="url(#darr)"/>
+        <!-- Air pump box -->
+        <g class="comp" id="c-pump" onclick="showInfo('pump')" aria-label="Air Pump">
+          <rect x="30" y="222" width="108" height="44" rx="8" fill="#F5F0FF" stroke="#8B7EC8" stroke-width="1.2"/>
+          <text x="84" y="240" text-anchor="middle" font-family="DM Serif Display,serif" font-size="12" fill="#4A3A8C">Air Pump</text>
+          <text x="84" y="256" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#8B7EC8">CO₂-rich air in</text>
+        </g>
+
+        <!-- O2 out arrow right -->
+        <line x1="700" y1="258" x2="752" y2="258" stroke="#5BB880" stroke-width="1.5" marker-end="url(#darr)"/>
+        <text x="726" y="250" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#2D7A4F">O₂ out</text>
+        <text x="770" y="262" font-family="DM Sans,sans-serif" font-size="9.5" fill="#2D7A4F">Clean air</text>
+
+        <!-- Three arrows down from algae -->
+        <line x1="320" y1="278" x2="250" y2="330" stroke="#3A9EBF" stroke-width="1.5" marker-end="url(#darr)"/>
+        <line x1="450" y1="278" x2="450" y2="330" stroke="#3A9EBF" stroke-width="1.5" marker-end="url(#darr)"/>
+        <line x1="580" y1="278" x2="650" y2="330" stroke="#3A9EBF" stroke-width="1.5" marker-end="url(#darr)"/>
+
+        <!-- Biomass box -->
+        <g class="comp" id="c-biomass" onclick="showInfo('biomass')" aria-label="Biomass Output">
+          <rect x="120" y="332" width="220" height="58" rx="10" fill="#E6F4EC" stroke="#2D7A4F" stroke-width="1.3"/>
+          <text x="230" y="357" text-anchor="middle" font-family="DM Serif Display,serif" font-size="13" fill="#1A4D30">Biomass Harvest</text>
+          <text x="230" y="374" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#5BB880">Biodiesel · biogas · fertiliser</text>
+        </g>
+
+        <!-- Cooling box -->
+        <g class="comp" id="c-cool" onclick="showInfo('cool')" aria-label="Cooling Effect">
+          <rect x="340" y="332" width="220" height="58" rx="10" fill="#EEF7FF" stroke="#3A8EBF" stroke-width="1.3"/>
+          <text x="450" y="357" text-anchor="middle" font-family="DM Serif Display,serif" font-size="13" fill="#1A3A5C">Panel Cooling</text>
+          <text x="450" y="374" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#3A9EBF">–12°C · +4–7% PV efficiency</text>
+        </g>
+
+        <!-- CO2 fix box -->
+        <g class="comp" id="c-co2" onclick="showInfo('co2')" aria-label="CO2 Fixation">
+          <rect x="560" y="332" width="220" height="58" rx="10" fill="#FFF3DC" stroke="#E5962A" stroke-width="1.3"/>
+          <text x="670" y="357" text-anchor="middle" font-family="DM Serif Display,serif" font-size="13" fill="#7A4A10">CO₂ Fixation</text>
+          <text x="670" y="374" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#C07820">15–30g CO₂/m²/day absorbed</text>
+        </g>
+
+        <!-- ESP32 -->
+        <g class="comp" id="c-esp" onclick="showInfo('esp')" aria-label="ESP32 Controller">
+          <rect x="300" y="432" width="300" height="58" rx="10" fill="#F5F0FF" stroke="#8B7EC8" stroke-width="1.3"/>
+          <text x="450" y="457" text-anchor="middle" font-family="DM Serif Display,serif" font-size="13" fill="#4A3A8C">ESP32 Controller</text>
+          <text x="450" y="474" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#8B7EC8">pH · Temp · CO₂ · Lux · Pumps · WiFi MQTT</text>
+        </g>
+        <!-- lines to ESP32 -->
+        <line x1="230" y1="392" x2="380" y2="432" stroke="#ccc" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="450" y1="392" x2="450" y2="432" stroke="#ccc" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="670" y1="392" x2="520" y2="432" stroke="#ccc" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- TEG optional -->
+        <g class="comp" id="c-teg" onclick="showInfo('teg')" aria-label="Thermoelectric Generator">
+          <rect x="732" y="332" width="140" height="58" rx="10" fill="#FFF3DC" stroke="#E5962A" stroke-width="1" stroke-dasharray="5 3"/>
+          <text x="802" y="355" text-anchor="middle" font-family="DM Serif Display,serif" font-size="12" fill="#7A4A10">TEG Module</text>
+          <text x="802" y="370" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#C07820">Optional</text>
+          <text x="802" y="383" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" fill="#C07820">0.5–2W from heat</text>
+        </g>
+
+        <!-- arrow defs -->
+        <defs>
+          <marker id="darr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <!-- Info Panel -->
+      <div class="info-panel" id="info-panel">
+        <div class="info-panel-icon" id="ip-icon">☀️</div>
+        <div class="info-panel-role" id="ip-role">Component</div>
+        <div class="info-panel-name" id="ip-name">Name</div>
+        <div class="info-panel-desc" id="ip-desc">Description</div>
+        <button class="info-panel-close" onclick="closeInfo()">✕ close</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROS & CONS -->
+<section id="proscons">
+  <div class="container">
+    <div class="section-tag">Honest assessment</div>
+    <h2 class="section-title">What works — and<br>what to watch out for</h2>
+    <div class="pc-grid">
+      <div class="pc-col">
+        <div class="pc-head">
+          <span class="pc-dot pro-dot"></span>
+          Advantages
+        </div>
+        <div class="pc-item"><span class="pc-item-icon">⚡</span><span><strong>Dual energy output</strong> — electricity from PV and biomass from algae from the same land footprint.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🌿</span><span><strong>CO₂ capture</strong> — microalgae fix roughly 1.8g of CO₂ per gram of biomass produced, scrubbing polluted air.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🌡️</span><span><strong>Panel cooling</strong> — the algae water layer keeps PV cells 10–15°C cooler, recovering 4–7% extra electrical efficiency.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">💧</span><span><strong>Closed-loop water</strong> — minimal evaporation compared to open algae ponds. Nearly all water stays in the system.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🏠</span><span><strong>No land competition</strong> — roof-mountable, building-integrated, or balcony-scale. Works at 1m² or 100m².</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🌬️</span><span><strong>Air purification</strong> — pumped air passes through algae culture, which absorbs CO₂ and releases pure O₂.</span></div>
+      </div>
+      <div class="pc-col">
+        <div class="pc-head">
+          <span class="pc-dot con-dot"></span>
+          Limitations
+        </div>
+        <div class="pc-item"><span class="pc-item-icon">🔧</span><span><strong>Higher complexity</strong> — pumps, sensors, and pH management add maintenance overhead compared to a plain solar panel.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">💰</span><span><strong>Higher upfront cost</strong> — the full DIY system runs $400–$800 vs ~$150 for a standalone 100W panel.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🧫</span><span><strong>Algae culture management</strong> — pH, temperature, and nutrients need monitoring; a culture crash loses weeks of growth.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🌑</span><span><strong>Algae shading</strong> — a very dense culture can reduce PV output by up to 30%. Density must be managed carefully.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">🏭</span><span><strong>Biomass processing</strong> — converting wet algae to usable biodiesel requires centrifuge and drying equipment.</span></div>
+        <div class="pc-item"><span class="pc-item-icon">❄️</span><span><strong>Seasonal limits</strong> — algae growth slows significantly below 15°C. Supplemental heating may be needed in cold climates.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="container">
+    <div class="section-tag">Proven science</div>
+    <h2 class="section-title">Who has already<br>tested this?</h2>
+    <p class="section-sub">Several leading universities and one full-scale commercial building have run real trials. Here is what they found.</p>
+    <div class="research-grid">
+      <div class="research-card"><div class="research-flag">🇩🇪</div><div class="research-org">Fraunhofer ISE, Germany</div><div class="research-title">Building-integrated PBR + PV facade</div><div class="research-result">12-month outdoor trial at 48°N latitude. Flat-plate bioreactors on building facades paired with CdTe solar cells.</div><span class="research-highlight">+18–28% total energy vs PV alone</span></div>
+      <div class="research-card"><div class="research-flag">🇮🇳</div><div class="research-org">IIT Bombay, India</div><div class="research-title">Prototype in tropical climate</div><div class="research-result">90-day outdoor experiment in Mumbai with Chlorella vulgaris and polycrystalline Si panels. Directly relevant to the Indian subcontinent climate.</div><span class="research-highlight">+6.8% PV efficiency from cooling</span></div>
+      <div class="research-card"><div class="research-flag">🇳🇱</div><div class="research-org">Wageningen / AlgaePARC</div><div class="research-title">World-class algae production research</div><div class="research-result">Flat-plate PBR outdoor pilot achieving best-in-class biomass yields. PV integration added in 2019–2021.</div><span class="research-highlight">20–30g dry weight/m²/day</span></div>
+      <div class="research-card"><div class="research-flag">🇺🇸</div><div class="research-org">UCSB / NREL</div><div class="research-title">Semi-transparent OPV over algae</div><div class="research-result">Organic photovoltaic films placed over live algae cultures. Algae growth maintained within 15% of unshaded controls.</div><span class="research-highlight">Panel temp reduced 7–9°C</span></div>
+      <div class="research-card"><div class="research-flag">🇩🇪</div><div class="research-org">BIQ House, Hamburg</div><div class="research-title">World's first algae building, 2013</div><div class="research-result">15-story residential block with 129 algae facade panels. First and still the largest real-world algae building in operation.</div><span class="research-highlight">1,700 kg biomass harvested/year</span></div>
+      <div class="research-card"><div class="research-flag">🇮🇹</div><div class="research-org">University of Florence</div><div class="research-title">BIPV algae facade modelling</div><div class="research-result">Modelled and partly prototyped algae-filled glass cladding panels. Significant HVAC energy savings from dynamic shading.</div><span class="research-highlight">Up to 1kg CO₂/m²/year captured</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EFFICIENCY -->
+<section id="efficiency">
+  <div class="container">
+    <div class="section-tag">By the numbers</div>
+    <h2 class="section-title">Why the hybrid<br>wins on output</h2>
+    <p class="section-sub">Per square metre, the combined system consistently outperforms either technology alone.</p>
+    <div class="eff-grid">
+      <div class="eff-card"><span class="eff-num">1.4</span><div class="eff-label">kWh equivalent per m²/day — 40% more than PV alone</div></div>
+      <div class="eff-card"><span class="eff-num">100kg</span><div class="eff-label">CO₂ absorbed per 10m² system per year</div></div>
+      <div class="eff-card"><span class="eff-num">20%</span><div class="eff-label">of lipid content in dry algae — ready for biodiesel refining</div></div>
+    </div>
+    <div class="bar-section">
+      <div class="bar-label-row"><span>Daily energy yield (kWh eq. / m²)</span><span>0 ────────────── 1.5</span></div>
+      <div class="bar-row"><div class="bar-name">Standalone PV only</div><div class="bar-track"><div class="bar-fill sun-color" data-width="67"></div></div></div>
+      <div class="bar-row"><div class="bar-name">Standalone algae PBR only</div><div class="bar-track"><div class="bar-fill leaf-color" data-width="27"></div></div></div>
+      <div class="bar-row"><div class="bar-name">Hybrid system (this project)</div><div class="bar-track"><div class="bar-fill hybrid-color" data-width="93"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CREATOR -->
+<section id="creator">
+  <div class="creator-bg"></div>
+  <p class="creator-pre">This project was designed and built by</p>
+  <div class="creator-name-wrap">
+    <span class="creator-name" id="creator-name">Nirmalya</span>
+  </div>
+  <p class="creator-tagline">Turning sunlight and green life into a cleaner tomorrow.</p>
+  <div class="creator-dots">
+    <span class="creator-dot"></span>
+    <span class="creator-dot"></span>
+    <span class="creator-dot"></span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Solar × Algae Hybrid System · Open-source MIT License · <a href="https://github.com">View on GitHub</a></p>
+</footer>
+
+
+<script>
+// ── FLOATING PARTICLES ──
+(function() {
+  const hero = document.getElementById('hero');
+  const colors = ['#2D7A4F','#F5A623','#3A9EBF','#5BB880'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const s = 4 + Math.random() * 8;
+    p.style.cssText = `
+      width:${s}px; height:${s}px;
+      left:${Math.random()*100}%;
+      top:${60 + Math.random()*40}%;
+      background:${colors[i%colors.length]};
+      animation-duration:${8 + Math.random()*12}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    hero.appendChild(p);
+  }
+})();
+
+// ── SCROLL ANIMATIONS ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.flow-step, .research-card').forEach(el => observer.observe(el));
+
+// stagger research cards
+document.querySelectorAll('.research-card').forEach((c, i) => {
+  c.style.transitionDelay = (i * 0.1) + 's';
+});
+document.querySelectorAll('.flow-step').forEach((c, i) => {
+  c.style.transitionDelay = (i * 0.12) + 's';
+});
+
+// ── BAR ANIMATION ──
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.bar-fill').forEach(b => {
+        b.style.width = b.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: 0.4 });
+const barSection = document.querySelector('.bar-section');
+if (barSection) barObserver.observe(barSection);
+
+// ── CREATOR NAME REVEAL ──
+const creatorObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('creator-name').classList.add('revealed');
+    }
+  });
+}, { threshold: 0.5 });
+const creatorEl = document.getElementById('creator');
+if (creatorEl) creatorObserver.observe(creatorEl);
+
+// ── COMPONENT INFO DATA ──
+const INFO = {
+  sun: {
+    icon: '☀️',
+    role: 'Energy Source',
+    name: 'Sunlight',
+    desc: 'The sun delivers the full electromagnetic spectrum. About 5% is UV, 43% visible light, and 52% is infrared heat. Conventional solar panels only convert the visible portion — this project captures what is normally thrown away.'
+  },
+  solar: {
+    icon: '🔆',
+    role: 'Primary energy converter',
+    name: 'Semi-transparent Solar Panel',
+    desc: 'A 100W photovoltaic panel with ~20% optical transparency. It converts blue and red wavelengths into ~18–21% electrical efficiency and intentionally lets infrared light pass through to the algae layer behind it. The algae water simultaneously cools its back surface, recovering 4–7% extra efficiency.'
+  },
+  mppt: {
+    icon: '🔋',
+    role: 'Power management',
+    name: 'MPPT Charge Controller + Battery',
+    desc: 'Maximum Power Point Tracking (MPPT) controller extracts the most possible power from the panel at any given light level. It charges a 12V LiFePO₄ battery, which stores energy for night-time pump operation and monitoring. A 50Ah battery provides ~14 hours of standby operation.'
+  },
+  algae: {
+    icon: '🌿',
+    role: 'Living bio-reactor',
+    name: 'Algae Photobioreactor (PBR)',
+    desc: 'A sealed flat-plate panel filled with Chlorella vulgaris or Spirulina in BG-11 nutrient medium. An air pump bubbles CO₂-rich air through it. The algae photosynthesize — absorbing CO₂ and releasing pure O₂ — and grow into energy-rich biomass at 10–20g dry weight per m² per day. The water layer also acts as a thermal buffer cooling the solar panel above.'
+  },
+  pump: {
+    icon: '🌬️',
+    role: 'Air & circulation',
+    name: 'Air Pump + Water Pump',
+    desc: 'A 12V DC air pump bubbles CO₂-laden air through the algae culture at 0.1–0.5 volumes per volume per minute, feeding the algae and preventing settling. A separate small 12V water circulation pump keeps the culture mixed and temperature even. Both are controlled by the ESP32 on timed duty cycles.'
+  },
+  biomass: {
+    icon: '🪴',
+    role: 'Energy output',
+    name: 'Biomass Harvest',
+    desc: 'When algae density reaches OD₆₈₀ > 1.5 (visually very green), 30–40% of the culture is harvested. The wet paste is centrifuged or filtered, dried at 60°C, then processed: lipids are extracted for biodiesel (up to 20% lipid content), the remainder can be fed to an anaerobic digester for biogas, or used directly as nitrogen-rich fertiliser.'
+  },
+  cool: {
+    icon: '❄️',
+    role: 'Efficiency booster',
+    name: 'Panel Cooling Effect',
+    desc: 'Solar cells lose 0.4–0.5% electrical efficiency for every 1°C above 25°C. In full sun, unshaded panels reach 55–65°C. With the algae water layer acting as a heat sink, panel temperature drops 10–15°C, recovering 4–7% of electrical output for free — with no moving parts and no extra cost.'
+  },
+  co2: {
+    icon: '💨',
+    role: 'Air purification',
+    name: 'CO₂ Fixation & Air Cleaning',
+    desc: 'Microalgae fix approximately 1.83g of CO₂ for every gram of dry biomass they produce. At a yield of 15g/m²/day, each square metre of bioreactor absorbs ~27g of CO₂ daily. A 10m² system absorbs ~100kg of CO₂ per year — equivalent to the emissions from driving a car ~430 km.'
+  },
+  esp: {
+    icon: '📡',
+    role: 'Automation & monitoring',
+    name: 'ESP32 Microcontroller',
+    desc: 'An ESP32 DevKit reads sensors every 10 seconds: DS18B20 temperature probe, pH electrode, BH1750 lux sensor, MH-Z19B CO₂ sensor, and INA219 power monitor. It automatically switches grow LEDs on when light falls below 1,000 lux, manages pump duty cycles, and broadcasts all readings over WiFi to an MQTT dashboard in real time.'
+  },
+  teg: {
+    icon: '🔥',
+    role: 'Optional bonus energy',
+    name: 'Thermoelectric Generator (TEG)',
+    desc: 'An optional TEC1-12706 thermoelectric module placed against the warm back of the solar panel generates a small voltage from the temperature difference between the hot panel surface (~50°C) and ambient air (~30°C). At a ΔT of 20°C it produces 0.5–2W extra power — small but free. Output feeds through an MT3608 boost converter into the main 12V bus.'
+  }
+};
+
+function showInfo(key) {
+  const d = INFO[key];
+  if (!d) return;
+  document.getElementById('ip-icon').textContent = d.icon;
+  document.getElementById('ip-role').textContent = d.role;
+  document.getElementById('ip-name').textContent = d.name;
+  document.getElementById('ip-desc').textContent = d.desc;
+  document.getElementById('info-panel').classList.add('show');
+}
+
+function closeInfo() {
+  document.getElementById('info-panel').classList.remove('show');
+}
+</script>
+</body>
+</html>
