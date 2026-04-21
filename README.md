@@ -43,6 +43,7 @@ The concept is inspired by building-integrated photovoltaics (BIPV) research and
 ## All the graphs of algie growth and etc
 <img width="691" height="470" alt="image" src="https://github.com/user-attachments/assets/ce71a535-8591-4bfa-a2bc-2b29e7946173" />
 <img width="686" height="470" alt="image" src="https://github.com/user-attachments/assets/447bd67c-b6b4-4f5b-a256-a6e552316393" />
+<img width="686" height="470" alt="image" src="https://github.com/user-attachments/assets/6982d684-fd60-4e29-a8a1-dc4adccabaf9" />
 
 ## How It Works
 
