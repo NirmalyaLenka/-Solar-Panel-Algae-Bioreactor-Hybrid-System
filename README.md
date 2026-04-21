@@ -40,6 +40,7 @@ The **Solar-Algae Hybrid System** integrates two complementary renewable technol
 The concept is inspired by building-integrated photovoltaics (BIPV) research and **agrivoltaic** farming. The algae panels are mounted **behind or beneath** semi-transparent solar cells, using the infrared/thermal portion of sunlight that PV cells normally waste as heat.
 
 ---
+<img width="691" height="470" alt="image" src="https://github.com/user-attachments/assets/ce71a535-8591-4bfa-a2bc-2b29e7946173" />
 
 ## How It Works
 
@@ -57,7 +58,6 @@ Sunlight
              ├──► O₂ released back to atmosphere
              ├──► Biomass harvested → Biodiesel / Biogas / Feed
              └──► Waste heat → Thermoelectric Generator (optional)
-<img width="691" height="470" alt="image" src="https://github.com/user-attachments/assets/bcd98c34-f48d-409e-b45f-a5daa6b1702c" />
 
 
 
