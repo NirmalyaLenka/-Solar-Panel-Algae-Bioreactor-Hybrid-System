@@ -1,0 +1,31 @@
+Item,Description,Qty,Unit,Est. Cost (USD),Supplier Options,Notes
+Semi-transparent solar panel,100W monocrystalline semi-transparent PV,1,piece,$80–$150,Amazon / AliExpress / local solar supplier,~10% light transmission
+Flat-plate photobioreactor (DIY),5mm clear acrylic sheets + silicone,1,set,$30–$80,Hardware store,Cut to size; or buy pre-made PBR online
+Algae starter culture,Chlorella vulgaris or Spirulina live culture,1,bottle,$10–$30,Amazon / algae suppliers / university bio dept,
+MPPT charge controller,12V/24V auto 20A,1,piece,$25–$60,Renogy / Amazon,Renogy Rover 20A recommended
+LiFePO4 battery,12V 50–100Ah lithium iron phosphate,1,piece,$80–$200,Amazon / Walmart,Lead-acid is cheaper but heavier
+Air pump,12V DC aquarium/pond air pump 5–10W,1,piece,$15–$30,Amazon / pet shop,
+Air diffuser stone,Fine bubble air stone + tubing,2,piece,$3–$8,Amazon / aquarium shop,
+Water circulation pump,12V DC 3–5W submersible mini pump,1,piece,$8–$15,Amazon / AliExpress,
+ESP32 DevKit V1,30-pin ESP32 development board,1,piece,$5–$12,Amazon / AliExpress / local electronics,
+DS18B20 temperature sensor,Waterproof probe version,2,piece,$3–$6 each,Amazon,One for water temp one for ambient
+pH sensor module,Analog pH probe + BNC board (e.g. DFRobot SEN0161),1,set,$12–$30,DFRobot / Amazon,Comes with probe + amplifier board
+BH1750 light sensor,GY-302 I²C lux sensor module,1,piece,$2–$5,Amazon / AliExpress,
+MH-Z19B CO₂ sensor,NDIR CO₂ sensor 0–5000ppm UART,1,piece,$15–$25,Amazon / AliExpress,
+INA219 power monitor,Voltage + current sensor I²C,1,piece,$3–$8,Amazon / Adafruit,
+4-channel relay module,5V input relay module,1,piece,$5–$10,Amazon / AliExpress,
+TEG module (optional),TEC1-12706 thermoelectric generator,2,piece,$4–$8 each,Amazon / AliExpress,Optional — captures waste heat
+MT3608 boost converter (optional),5V/12V boost for TEG output,1,piece,$2–$5,Amazon / AliExpress,
+Resistors,10kΩ + 20kΩ for pH voltage divider; 4.7kΩ for DS18B20 pull-up,1,set,$1–$3,Electronics store,
+Wiring harness,22AWG solid-core wire 5m red + 5m black,1,set,$5–$10,Hardware / electronics store,
+Fuse holder + 10A fuse,Inline automotive fuse,1,set,$2–$5,Auto parts / Amazon,
+Waterproof enclosure (IP65),For electronics; approx 200×150×75mm,1,piece,$10–$20,Amazon / AliExpress,
+Aluminum brackets,For panel + PBR mounting,1,set,$10–$30,Hardware store,
+BG-11 medium,Pre-mixed powder (1L makes ~1000L medium),1,bag,$15–$40,Sigma-Aldrich / online bio suppliers,
+Aquarium silicone sealant,For sealing PBR edges,1,tube,$5–$10,Pet shop / hardware store,Food-safe / aquarium-safe only
+LED grow light strip (optional),Red+blue 12V LED strip for supplemental light,1,m,$5–$15,Amazon / AliExpress,
+Jumper wires,Male-female 40-pack,1,pack,$3–$5,Amazon / AliExpress,
+USB-C power bank (for prototyping),Temporarily power ESP32 during testing,1,piece,$10–$20,Any,Optional — for bench testing only
+,,,,,,
+TOTAL (without optional items),,,,~$350–$650,,
+TOTAL (with all optional items),,,,~$450–$800,,
